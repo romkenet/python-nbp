@@ -109,7 +109,9 @@ def download(url):
     try:
         resp = urllib2.urlopen(url)
         if hasattr(resp, 'getcode') and resp.getcode() == 200:
-            return resp
+            if hasattr(resp, 'info') and resp.info()['content-type'] == 'text/xml':
+                return resp
+        return None
     except urllib2.URLError, e:
         resp = None
     return resp
